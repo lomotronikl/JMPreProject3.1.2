@@ -4,7 +4,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.jm.jmspringboot.model.User;
 import ru.jm.jmspringboot.service.UserService;
@@ -45,13 +44,8 @@ public class AdminController {
     }
 
     @GetMapping("/admin/{id}")
-//	@ResponseBody
     public User adminEditUser(@PathVariable("id") int id, ModelMap model){
         User user= userService.getUser(id);
-        System.out.println(id);
-        //user.emptyPassword();
-        //model.addAttribute("user",  user );
-        //return "updateuser";
         return user;
     }
 
@@ -59,7 +53,6 @@ public class AdminController {
     @ResponseBody
     public User adminEditUser(@PathVariable("id") int id) {
         User user= userService.getUser(id);
-      //  System.out.println("adm:"+user.isRoleAdmin()+" :"+user.isRoleUser());
         user.emptyPassword();
         return user;
     }
@@ -83,28 +76,10 @@ public class AdminController {
         return "redirect:/admin/index";
     }
 
-
-    @GetMapping("/admin/createuser")
-    public String adminCreateUser(ModelMap model){
-        User user= new User();
-        model.addAttribute("user",  user );
-        return "createuser";
-    }
-
     @PostMapping("/admin/create")
-    public String adminCreateUSer( @ModelAttribute("user") User user
-                                    ){
-        System.out.println(user);
-        userService.saveUser(user);
+    public String adminCreateUSer( @ModelAttribute("user") User user ){
+          userService.saveUser(user);
         return "redirect:/admin/index";
     }
-/*
-    @DeleteMapping(value = "/admin/{id}")
-    public String deletUser(@PathVariable("id") int id) {
-
-        userService.removeUserById(id);
-        return "redirect:/admin";
-    }
-*/
 
 }
